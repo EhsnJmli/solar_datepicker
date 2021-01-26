@@ -1,3 +1,3 @@
-# solar_datepicker
+# Solar DatePicker
 
 Datepicker for persian date(solar/jalali/shamsi date).
