@@ -33,8 +33,7 @@ const Duration _kMonthScrollDuration = Duration(milliseconds: 200);
 const double _kDayPickerRowHeight = 42;
 const int _kMaxDayPickerRowCount = 6; // A 31 day month that starts on Saturday.
 // Two extra rows: one for the day-of-week header and one for the month header.
-const double _kMaxDayPickerHeight =
-    _kDayPickerRowHeight * (_kMaxDayPickerRowCount + 2);
+const double _kMaxDayPickerHeight = _kDayPickerRowHeight * (_kMaxDayPickerRowCount + 2);
 
 // Shows the selected date in large font and toggles between year and day mode
 class _SolarDatePickerHeader extends StatelessWidget {
@@ -64,30 +63,25 @@ class _SolarDatePickerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations =
-        MaterialLocalizations.of(context);
+    final localizations = MaterialLocalizations.of(context);
     final themeData = Theme.of(context);
     final headerTextTheme = themeData.primaryTextTheme;
-    final persianDate =
-        SolarDate.sDate(gregorian: selectedDate.toString());
+    final persianDate = SolarDate.sDate(gregorian: selectedDate.toString());
 
     Color dayColor;
     Color yearColor;
     switch (themeData.primaryColorBrightness) {
       case Brightness.light:
         dayColor = mode == SolarDatePickerMode.day ? Colors.black87 : Colors.black54;
-        yearColor =
-            mode == SolarDatePickerMode.year ? Colors.black87 : Colors.black54;
+        yearColor = mode == SolarDatePickerMode.year ? Colors.black87 : Colors.black54;
         break;
       case Brightness.dark:
         dayColor = mode == SolarDatePickerMode.day ? Colors.white : Colors.white70;
         yearColor = mode == SolarDatePickerMode.year ? Colors.white : Colors.white70;
         break;
     }
-    final dayStyle =
-        headerTextTheme.headline4.copyWith(color: dayColor);
-    final yearStyle =
-        headerTextTheme.subtitle1.copyWith(color: yearColor);
+    final dayStyle = headerTextTheme.headline4.copyWith(color: dayColor);
+    final yearStyle = headerTextTheme.subtitle1.copyWith(color: yearColor);
 
     Color backgroundColor;
     switch (themeData.brightness) {
@@ -120,15 +114,10 @@ class _SolarDatePickerHeader extends StatelessWidget {
       ignoringSemantics: false,
       child: _DateHeaderButton(
         color: backgroundColor,
-        onTap: Feedback.wrapForTap(
-            () => _handleChangeMode(SolarDatePickerMode.year), context),
+        onTap: Feedback.wrapForTap(() => _handleChangeMode(SolarDatePickerMode.year), context),
         child: Semantics(
           selected: mode == SolarDatePickerMode.year,
-          child: Text(
-              isPersian
-                  ? '${persianDate.year}'
-                  : localizations.formatYear(selectedDate),
-              style: yearStyle),
+          child: Text(isPersian ? '${persianDate.year}' : localizations.formatYear(selectedDate), style: yearStyle),
         ),
       ),
     );
@@ -138,8 +127,7 @@ class _SolarDatePickerHeader extends StatelessWidget {
       ignoringSemantics: false,
       child: _DateHeaderButton(
         color: backgroundColor,
-        onTap: Feedback.wrapForTap(
-            () => _handleChangeMode(SolarDatePickerMode.day), context),
+        onTap: Feedback.wrapForTap(() => _handleChangeMode(SolarDatePickerMode.day), context),
         child: Semantics(
           selected: mode == SolarDatePickerMode.day,
           child: Text(
@@ -208,8 +196,7 @@ class _DayPickerGridDelegate extends SliverGridDelegate {
   SliverGridLayout getLayout(SliverConstraints constraints) {
     const columnCount = DateTime.daysPerWeek;
     final tileWidth = constraints.crossAxisExtent / columnCount;
-    final viewTileHeight =
-        constraints.viewportMainAxisExtent / (_kMaxDayPickerRowCount + 1);
+    final viewTileHeight = constraints.viewportMainAxisExtent / (_kMaxDayPickerRowCount + 1);
     final tileHeight = math.max(_kDayPickerRowHeight, viewTileHeight);
     return SliverGridRegularTileLayout(
       crossAxisCount: columnCount,
@@ -262,8 +249,7 @@ class SolarDayPicker extends StatelessWidget {
         assert(displayedMonth != null),
         assert(dragStartBehavior != null),
         assert(!firstDate.isAfter(lastDate)),
-        assert(selectedDate.isAfter(firstDate) ||
-            selectedDate.isAtSameMomentAs(firstDate)),
+        assert(selectedDate.isAfter(firstDate) || selectedDate.isAtSameMomentAs(firstDate)),
         super(key: key);
 
   final bool isPersian;
@@ -327,10 +313,11 @@ class SolarDayPicker extends StatelessWidget {
   /// _ _ _ _ 1 2 3
   /// 4 5 6 7 8 9 10
   /// ```
-  List<Widget> _getDayHeaders(
-      TextStyle headerStyle, MaterialLocalizations localizations) {
+  List<Widget> _getDayHeaders(TextStyle headerStyle, MaterialLocalizations localizations) {
     final result = <Widget>[];
-    for (var i = localizations.firstDayOfWeekIndex; i != (isPersian ? 5 : localizations.firstDayOfWeekIndex - 1) % 7; i = (i + 1) % 7) {
+    for (var i = localizations.firstDayOfWeekIndex;
+        i != (isPersian ? 5 : localizations.firstDayOfWeekIndex - 1) % 7;
+        i = (i + 1) % 7) {
       final weekday = localizations.narrowWeekdays[i];
       result.add(ExcludeSemantics(
         child: Center(child: Text(weekday, style: headerStyle)),
@@ -353,20 +340,7 @@ class SolarDayPicker extends StatelessWidget {
   ];
 
   // Do not use this directly - call getDaysInMonth instead.
-  static const List<int> _daysInMonth = <int>[
-    31,
-    -1,
-    31,
-    30,
-    31,
-    30,
-    31,
-    31,
-    30,
-    31,
-    30,
-    31
-  ];
+  static const List<int> _daysInMonth = <int>[31, -1, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 //  static const List<int> _daysInPersianMonth = <int>[
 //    31,
@@ -399,8 +373,7 @@ class SolarDayPicker extends StatelessWidget {
       return Jalali.fromDateTime(DateTime(year, month)).monthLength;
     } else {
       if (month == DateTime.february) {
-        final isLeapYear =
-            (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
+        final isLeapYear = (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
         if (isLeapYear) {
           return 29;
         }
@@ -442,8 +415,7 @@ class SolarDayPicker extends StatelessWidget {
   ///   into the [MaterialLocalizations.narrowWeekdays] list.
   /// - [MaterialLocalizations.narrowWeekdays] list provides localized names of
   ///   days of week, always starting with Sunday and ending with Saturday.
-  int _computeFirstDayOffset(
-      int year, int month, int mDay, MaterialLocalizations localizations) {
+  int _computeFirstDayOffset(int year, int month, int mDay, MaterialLocalizations localizations) {
     // 0-based day of week, with 0 representing Monday.
     final weekdayFromMonday = DateTime(year, month).weekday - 1;
     // 0-based day of week, with 0 representing Sunday and Saturday.
@@ -468,19 +440,15 @@ class SolarDayPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
-    final localizations =
-        MaterialLocalizations.of(context);
+    final localizations = MaterialLocalizations.of(context);
     final year = displayedMonth.year;
     final month = displayedMonth.month;
     final mDay = displayedMonth.day;
 
-    final getPearData =
-        SolarDate.sDate(gregorian: displayedMonth.toString());
-    final selectedPersianDate =
-        SolarDate.sDate(gregorian: selectedDate.toString());
+    final getPearData = SolarDate.sDate(gregorian: displayedMonth.toString());
+    final selectedPersianDate = SolarDate.sDate(gregorian: selectedDate.toString());
 
-    final currentPDate =
-        SolarDate.sDate(gregorian: currentDate.toString());
+    final currentPDate = SolarDate.sDate(gregorian: currentDate.toString());
 
     final daysInMonth = getDaysInMonth(year, month, isPersian);
     final pDay = _digits(mDay, 2);
@@ -491,17 +459,15 @@ class SolarDayPicker extends StatelessWidget {
 
     final pMonth = _digits(jtgData[1], 2);
 
-    final pdate =
-        SolarDate.sDate(gregorian: '${jtgData[0]}-$pMonth-${jtgData[2]}');
+    final pdate = SolarDate.sDate(gregorian: '${jtgData[0]}-$pMonth-${jtgData[2]}');
 
-    final firstDayOffset = isPersian
-        ? dayShort.indexOf(pdate.weekdayName)
-        : _computeFirstDayOffset(year, month, mDay, localizations);
+    final firstDayOffset =
+        isPersian ? dayShort.indexOf(pdate.weekdayName) : _computeFirstDayOffset(year, month, mDay, localizations);
     final labels = <Widget>[
       ..._getDayHeaders(themeData.textTheme.caption, localizations),
     ];
     // ignore: literal_only_boolean_expressions
-    for (var i = 0; true ; i += 1) {
+    for (var i = 0; true; i += 1) {
       // 1-based day of month, e.g. 1-31 for January, and 1-29 for February on
       // a leap year.
       final day = i - firstDayOffset + 1;
@@ -512,24 +478,18 @@ class SolarDayPicker extends StatelessWidget {
         labels.add(Container());
       } else {
         final pDay = _digits(day, 2);
-        final jtgData = date.solarToGregorian(
-            getPearData.year, getPearData.month, int.parse(pDay));
+        final jtgData = date.solarToGregorian(getPearData.year, getPearData.month, int.parse(pDay));
 
-        final dayToBuild = isPersian
-            ? DateTime(jtgData[0], jtgData[1], jtgData[2])
-            : DateTime(year, month, day);
+        final dayToBuild = isPersian ? DateTime(jtgData[0], jtgData[1], jtgData[2]) : DateTime(year, month, day);
         final disabled = dayToBuild.isAfter(lastDate) ||
             dayToBuild.isBefore(firstDate) ||
-            (selectableDayPredicate != null &&
-                !selectableDayPredicate(dayToBuild));
+            (selectableDayPredicate != null && !selectableDayPredicate(dayToBuild));
 
         BoxDecoration decoration;
         var itemStyle = themeData.textTheme.bodyText2;
 
         final isSelectedDay = !isPersian
-            ? (selectedDate.year == year &&
-                selectedDate.month == month &&
-                selectedDate.day == day)
+            ? (selectedDate.year == year && selectedDate.month == month && selectedDate.day == day)
             : (selectedPersianDate.year == getPearData.year &&
                 selectedPersianDate.month == getPearData.month &&
                 selectedPersianDate.day == day);
@@ -541,21 +501,16 @@ class SolarDayPicker extends StatelessWidget {
             shape: BoxShape.circle,
           );
         } else if (disabled) {
-          itemStyle = themeData.textTheme.bodyText2
-              .copyWith(color: themeData.disabledColor);
+          itemStyle = themeData.textTheme.bodyText2.copyWith(color: themeData.disabledColor);
         } else {
-          if ((isPersian &&
-                currentDate.year == year &&
-                currentDate.month == month &&
-                currentDate.day == day) ||
-            (isPersian &&
-                currentPDate.year == getPearData.year &&
-                currentPDate.month == getPearData.month &&
-                currentPDate.day == day)) {
-          // The current day gets a different text color.
-          itemStyle = themeData.textTheme.bodyText1
-              .copyWith(color: themeData.accentColor);
-        }
+          if ((isPersian && currentDate.year == year && currentDate.month == month && currentDate.day == day) ||
+              (isPersian &&
+                  currentPDate.year == getPearData.year &&
+                  currentPDate.month == getPearData.month &&
+                  currentPDate.day == day)) {
+            // The current day gets a different text color.
+            itemStyle = themeData.textTheme.bodyText1.copyWith(color: themeData.accentColor);
+          }
         }
 
         Widget dayWidget = Container(
@@ -568,8 +523,7 @@ class SolarDayPicker extends StatelessWidget {
               // day of month before the rest of the date, as they are looking
               // for the day of month. To do that we prepend day of month to the
               // formatted full date.
-              label:
-                  '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}',
+              label: '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}',
               selected: isSelectedDay,
               sortKey: OrdinalSortKey(day.toDouble()),
               child: ExcludeSemantics(
@@ -613,9 +567,7 @@ class SolarDayPicker extends StatelessWidget {
 //                      ? formatPersianDate(Jalali.fromDateTime(
 //                          DateTime(displayedMonth.year, displayedMonth.month)))
 //                      :
-                  isPersian
-                      ? '${pdate.monthName}  ${pdate.year}'
-                      : localizations.formatMonthYear(displayedMonth),
+                  isPersian ? '${pdate.monthName}  ${pdate.year}' : localizations.formatMonthYear(displayedMonth),
                   style: themeData.textTheme.subtitle1,
                 ),
               ),
@@ -624,8 +576,7 @@ class SolarDayPicker extends StatelessWidget {
           Flexible(
             child: GridView.custom(
               gridDelegate: _kDayPickerGridDelegate,
-              childrenDelegate:
-                  SliverChildListDelegate(labels, addRepaintBoundaries: false),
+              childrenDelegate: SliverChildListDelegate(labels, addRepaintBoundaries: false),
               padding: EdgeInsets.zero,
             ),
           ),
@@ -678,8 +629,7 @@ class SolarMonthPicker extends StatefulWidget {
   })  : assert(selectedDate != null),
         assert(onChanged != null),
         assert(!firstDate.isAfter(lastDate)),
-        assert(selectedDate.isAfter(firstDate) ||
-            selectedDate.isAtSameMomentAs(firstDate)),
+        assert(selectedDate.isAfter(firstDate) || selectedDate.isAtSameMomentAs(firstDate)),
         super(key: key);
 
   /// The currently selected date.
@@ -708,11 +658,9 @@ class SolarMonthPicker extends StatefulWidget {
   _SolarMonthPickerState createState() => _SolarMonthPickerState();
 }
 
-class _SolarMonthPickerState extends State<SolarMonthPicker>
-    with SingleTickerProviderStateMixin {
+class _SolarMonthPickerState extends State<SolarMonthPicker> with SingleTickerProviderStateMixin {
   static final Animatable<double> _chevronOpacityTween =
-      Tween<double>(begin: 1, end: 0)
-          .chain(CurveTween(curve: Curves.easeInOut));
+      Tween<double>(begin: 1, end: 0).chain(CurveTween(curve: Curves.easeInOut));
 
   @override
   void initState() {
@@ -728,8 +676,7 @@ class _SolarMonthPickerState extends State<SolarMonthPicker>
       duration: const Duration(milliseconds: 250),
       vsync: this,
     );
-    _chevronOpacityAnimation =
-        _chevronOpacityController.drive(_chevronOpacityTween);
+    _chevronOpacityAnimation = _chevronOpacityController.drive(_chevronOpacityTween);
   }
 
   @override
@@ -761,31 +708,27 @@ class _SolarMonthPickerState extends State<SolarMonthPicker>
 
   void _updateCurrentDate() {
     _todayDate = DateTime.now();
-    final tomorrow =
-        DateTime(_todayDate.year, _todayDate.month, _todayDate.day + 1);
+    final tomorrow = DateTime(_todayDate.year, _todayDate.month, _todayDate.day + 1);
     var timeUntilTomorrow = tomorrow.difference(_todayDate);
-    timeUntilTomorrow +=
-        const Duration(seconds: 1); // so we don't miss it by rounding
+    timeUntilTomorrow += const Duration(seconds: 1); // so we don't miss it by rounding
     _timer?.cancel();
     _timer = Timer(timeUntilTomorrow, () {
       setState(_updateCurrentDate);
     });
   }
 
-  static int _monthDelta(DateTime startDate, DateTime endDate) => (endDate.year - startDate.year) * 12 +
-        endDate.month -
-        startDate.month;
+  static int _monthDelta(DateTime startDate, DateTime endDate) =>
+      (endDate.year - startDate.year) * 12 + endDate.month - startDate.month;
 
   /// Add months to a month truncated date.
-  DateTime _addMonthsToMonthDate(DateTime monthDate, int monthsToAdd) => DateTime(
-        monthDate.year + monthsToAdd ~/ 12, monthDate.month + monthsToAdd % 12);
+  DateTime _addMonthsToMonthDate(DateTime monthDate, int monthsToAdd) =>
+      DateTime(monthDate.year + monthsToAdd ~/ 12, monthDate.month + monthsToAdd % 12);
 
   Widget _buildItems(BuildContext context, int index) {
     var month = _addMonthsToMonthDate(widget.firstDate, index);
 
     if (widget.isPersian) {
-      final selectedPersianDate = SolarDate.sDate(
-          gregorian: widget.selectedDate.toString()); // To Edit Month Displaye
+      final selectedPersianDate = SolarDate.sDate(gregorian: widget.selectedDate.toString()); // To Edit Month Displaye
 
       if (selectedPersianDate.day >= 1 && selectedPersianDate.day < 12) {
         month = _addMonthsToMonthDate(widget.firstDate, index + 1);
@@ -808,112 +751,105 @@ class _SolarMonthPickerState extends State<SolarMonthPicker>
 
   void _handleNextMonth() {
     if (!_isDisplayingLastMonth) {
-      SemanticsService.announce(
-          localizations.formatMonthYear(_nextMonthDate), textDirection);
-      _dayPickerController.nextPage(
-          duration: _kMonthScrollDuration, curve: Curves.ease);
+      SemanticsService.announce(localizations.formatMonthYear(_nextMonthDate), textDirection);
+      _dayPickerController.nextPage(duration: _kMonthScrollDuration, curve: Curves.ease);
     }
   }
 
   void _handlePreviousMonth() {
     if (!_isDisplayingFirstMonth) {
-      SemanticsService.announce(
-          localizations.formatMonthYear(_previousMonthDate), textDirection);
-      _dayPickerController.previousPage(
-          duration: _kMonthScrollDuration, curve: Curves.ease);
+      SemanticsService.announce(localizations.formatMonthYear(_previousMonthDate), textDirection);
+      _dayPickerController.previousPage(duration: _kMonthScrollDuration, curve: Curves.ease);
     }
   }
 
   /// True if the earliest allowable month is displayed.
-  bool get _isDisplayingFirstMonth => !_currentDisplayedMonthDate
-        .isAfter(DateTime(widget.firstDate.year, widget.firstDate.month));
+  bool get _isDisplayingFirstMonth =>
+      !_currentDisplayedMonthDate.isAfter(DateTime(widget.firstDate.year, widget.firstDate.month));
 
   /// True if the latest allowable month is displayed.
-  bool get _isDisplayingLastMonth => !_currentDisplayedMonthDate
-        .isBefore(DateTime(widget.lastDate.year, widget.lastDate.month));
+  bool get _isDisplayingLastMonth =>
+      !_currentDisplayedMonthDate.isBefore(DateTime(widget.lastDate.year, widget.lastDate.month));
 
   DateTime _previousMonthDate;
   DateTime _nextMonthDate;
 
   void _handleMonthPageChanged(int monthPage) {
     setState(() {
-      _previousMonthDate =
-          _addMonthsToMonthDate(widget.firstDate, monthPage - 1);
-      _currentDisplayedMonthDate =
-          _addMonthsToMonthDate(widget.firstDate, monthPage);
+      _previousMonthDate = _addMonthsToMonthDate(widget.firstDate, monthPage - 1);
+      _currentDisplayedMonthDate = _addMonthsToMonthDate(widget.firstDate, monthPage);
       _nextMonthDate = _addMonthsToMonthDate(widget.firstDate, monthPage + 1);
     });
   }
 
   @override
   Widget build(BuildContext context) => SizedBox(
-      // The month picker just adds month navigation to the day picker, so make
-      // it the same height as the DayPicker
-      height: _kMaxDayPickerHeight,
-      child: Stack(
-        children: <Widget>[
-          Semantics(
-            sortKey: _MonthPickerSortKey.calendar,
-            child: NotificationListener<ScrollStartNotification>(
-              onNotification: (_) {
-                _chevronOpacityController.forward();
-                return false;
-              },
-              child: NotificationListener<ScrollEndNotification>(
+        // The month picker just adds month navigation to the day picker, so make
+        // it the same height as the DayPicker
+        height: _kMaxDayPickerHeight,
+        child: Stack(
+          children: <Widget>[
+            Semantics(
+              sortKey: _MonthPickerSortKey.calendar,
+              child: NotificationListener<ScrollStartNotification>(
                 onNotification: (_) {
-                  _chevronOpacityController.reverse();
+                  _chevronOpacityController.forward();
                   return false;
                 },
-                child: PageView.builder(
-                  dragStartBehavior: widget.dragStartBehavior,
-                  key: ValueKey<DateTime>(widget.selectedDate),
-                  controller: _dayPickerController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _monthDelta(widget.firstDate, widget.lastDate) + 1,
-                  itemBuilder: _buildItems,
-                  onPageChanged: _handleMonthPageChanged,
+                child: NotificationListener<ScrollEndNotification>(
+                  onNotification: (_) {
+                    _chevronOpacityController.reverse();
+                    return false;
+                  },
+                  child: PageView.builder(
+                    dragStartBehavior: widget.dragStartBehavior,
+                    key: ValueKey<DateTime>(widget.selectedDate),
+                    controller: _dayPickerController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _monthDelta(widget.firstDate, widget.lastDate) + 1,
+                    itemBuilder: _buildItems,
+                    onPageChanged: _handleMonthPageChanged,
+                  ),
                 ),
               ),
             ),
-          ),
-          PositionedDirectional(
-            top: 0,
-            start: 8,
-            child: Semantics(
-              sortKey: _MonthPickerSortKey.previousMonth,
-              child: FadeTransition(
-                opacity: _chevronOpacityAnimation,
-                child: IconButton(
-                  icon: const Icon(Icons.chevron_left),
-                  tooltip: _isDisplayingFirstMonth
-                      ? null
-                      : '${localizations.previousMonthTooltip} ${localizations.formatMonthYear(_previousMonthDate)}',
-                  onPressed:
-                      _isDisplayingFirstMonth ? null : _handlePreviousMonth,
+            PositionedDirectional(
+              top: 0,
+              start: 8,
+              child: Semantics(
+                sortKey: _MonthPickerSortKey.previousMonth,
+                child: FadeTransition(
+                  opacity: _chevronOpacityAnimation,
+                  child: IconButton(
+                    icon: const Icon(Icons.chevron_left),
+                    tooltip: _isDisplayingFirstMonth
+                        ? null
+                        : '${localizations.previousMonthTooltip} ${localizations.formatMonthYear(_previousMonthDate)}',
+                    onPressed: _isDisplayingFirstMonth ? null : _handlePreviousMonth,
+                  ),
                 ),
               ),
             ),
-          ),
-          PositionedDirectional(
-            top: 0,
-            end: 8,
-            child: Semantics(
-              sortKey: _MonthPickerSortKey.nextMonth,
-              child: FadeTransition(
-                opacity: _chevronOpacityAnimation,
-                child: IconButton(
-                  icon: const Icon(Icons.chevron_right),
-                  tooltip: _isDisplayingLastMonth
-                      ? null
-                      : '${localizations.nextMonthTooltip} ${localizations.formatMonthYear(_nextMonthDate)}',
-                  onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
+            PositionedDirectional(
+              top: 0,
+              end: 8,
+              child: Semantics(
+                sortKey: _MonthPickerSortKey.nextMonth,
+                child: FadeTransition(
+                  opacity: _chevronOpacityAnimation,
+                  child: IconButton(
+                    icon: const Icon(Icons.chevron_right),
+                    tooltip: _isDisplayingLastMonth
+                        ? null
+                        : '${localizations.nextMonthTooltip} ${localizations.formatMonthYear(_nextMonthDate)}',
+                    onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
 
   @override
   void dispose() {
@@ -1000,8 +936,7 @@ class _SolarYearPickerState extends State<SolarYearPicker> {
     super.initState();
     scrollController = ScrollController(
       // Move the initial scroll position to the currently selected date's year.
-      initialScrollOffset:
-          (widget.selectedDate.year - widget.firstDate.year) * _itemExtent,
+      initialScrollOffset: (widget.selectedDate.year - widget.firstDate.year) * _itemExtent,
     );
   }
 
@@ -1018,25 +953,18 @@ class _SolarYearPickerState extends State<SolarYearPicker> {
       itemBuilder: (context, index) {
         final year = widget.firstDate.year + index;
         final isSelected = year == widget.selectedDate.year;
-        final dateee =
-            DateTime(year, widget.selectedDate.month, widget.selectedDate.day);
+        final dateee = DateTime(year, widget.selectedDate.month, widget.selectedDate.day);
         final pYear = SolarDate.sDate(gregorian: dateee.toString());
-        final itemStyle = isSelected
-            ? themeData.textTheme.headline5
-                .copyWith(color: themeData.accentColor)
-            : style;
+        final itemStyle = isSelected ? themeData.textTheme.headline5.copyWith(color: themeData.accentColor) : style;
         return InkWell(
           key: ValueKey<int>(year),
           onTap: () {
-            widget.onChanged(DateTime(
-                year, widget.selectedDate.month, widget.selectedDate.day));
+            widget.onChanged(DateTime(year, widget.selectedDate.month, widget.selectedDate.day));
           },
           child: Center(
             child: Semantics(
               selected: isSelected,
-              child: Text(
-                  widget.isPersian ? pYear.year.toString() : year.toString(),
-                  style: itemStyle),
+              child: Text(widget.isPersian ? pYear.year.toString() : year.toString(), style: itemStyle),
             ),
           ),
         );
@@ -1117,11 +1045,9 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
     setState(() {
       _mode = mode;
       if (_mode == SolarDatePickerMode.day) {
-        SemanticsService.announce(
-            localizations.formatMonthYear(_selectedDate), textDirection);
+        SemanticsService.announce(localizations.formatMonthYear(_selectedDate), textDirection);
       } else {
-        SemanticsService.announce(
-            localizations.formatYear(_selectedDate), textDirection);
+        SemanticsService.announce(localizations.formatYear(_selectedDate), textDirection);
       }
     });
   }
@@ -1204,8 +1130,7 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
     );
 
     final dialog = Dialog(
-      child: OrientationBuilder(
-          builder: (context, orientation) {
+      child: OrientationBuilder(builder: (context, orientation) {
         assert(orientation != null);
         final Widget header = _SolarDatePickerHeader(
           selectedDate: _selectedDate,
@@ -1348,16 +1273,12 @@ Future<DateTime> showSolarDatePicker({
   assert(firstDate != null);
   assert(lastDate != null);
   assert(useRootNavigator != null);
-  assert(!initialDate.isBefore(firstDate),
-      'initialDate must be on or after firstDate');
-  assert(!initialDate.isAfter(lastDate),
-      'initialDate must be on or before lastDate');
-  assert(
-      !firstDate.isAfter(lastDate), 'lastDate must be on or after firstDate');
+  assert(!initialDate.isBefore(firstDate), 'initialDate must be on or after firstDate');
+  assert(!initialDate.isAfter(lastDate), 'initialDate must be on or before lastDate');
+  assert(!firstDate.isAfter(lastDate), 'lastDate must be on or after firstDate');
   assert(selectableDayPredicate == null || selectableDayPredicate(initialDate),
       'Provided initialDate must satisfy provided selectableDayPredicate');
-  assert(
-      initialDatePickerMode != null, 'initialDatePickerMode must not be null');
+  assert(initialDatePickerMode != null, 'initialDatePickerMode must not be null');
   assert(context != null);
   assert(debugCheckHasMaterialLocalizations(context));
 

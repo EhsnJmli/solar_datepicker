@@ -1,6 +1,6 @@
 name: solar_datepicker
-description: Datepicker for persian date(solar/jalali/shamsi date).
-version: 0.0.1
+description: Date Picker for persian date (solar / jalali / shamsi date).
+version: 0.0.1+1
 homepage: https://github.com/EhsnJmli/solar_datepicker
 
 environment:

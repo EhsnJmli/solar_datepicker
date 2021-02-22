@@ -6,7 +6,7 @@ const String mm = 'mm'; // 2 عدد ماه اگر ماه تک رقمی باشد 
 
 const String m = 'm'; // 1 عدد ماه اگر ماه تک رقمی باشد 0 قرار نمیدهد
 
-const String mmCaps = 'MM'; // ماه به صورت حروفی کامل
+const String MM = 'MM'; // ماه به صورت حروفی کامل
 
 const String M = 'M'; // ماه به صورت حروفی کوتاه
 
@@ -16,16 +16,15 @@ const String d = 'd'; // روز به صورت تک رقمی برای روز ها
 
 const String w = 'w'; // عدد هفته از ماه را بر میگرداند
 
-const String dD = 'DD'; // نام روز
+const String DD = 'DD'; // نام روز
 
 const String D = 'D'; // نام روز
 
-const String hh =
-    'hh'; // ساعت با دو رقم اگر ساعت تک رقمی باشد 0 ابتدای عدد قرار میدهد فرمت 12 ساعته
+const String hh = 'hh'; // ساعت با دو رقم اگر ساعت تک رقمی باشد 0 ابتدای عدد قرار میدهد فرمت 12 ساعته
 
 const String h = 'h'; // ساعت با تک رقم فرمت 12 ساعته
 
-const String hhCaps = 'HH'; // ساعت با 2 رقم فرمت 24 ساعته
+const String HH = 'HH'; // ساعت با 2 رقم فرمت 24 ساعته
 
 const String H = 'H'; // ساعت با تک رقم فرمت 24 ساعته
 
@@ -37,7 +36,7 @@ const String ss = 'ss'; // نمایش ثانیه دو رقمی
 
 const String s = 's'; // نمایش ثانیه تک رقمی
 
-const String sss = 'SSS'; // نمایش میلی ثانیه
+const String SSS = 'SSS'; // نمایش میلی ثانیه
 
 const String S = 'S'; // نمایش میلی ثانیه
 
@@ -47,7 +46,7 @@ const String u = 'u'; // نمایش میکرو ثانیه
 
 const String am = 'am'; // نمایش وقت به صورت کوتاه
 
-const String amCaps = 'AM'; // نمایش وقت به صورت کامل
+const String AM = 'AM'; // نمایش وقت به صورت کامل
 
 class SolarDate {
   SolarDate([String format]) {
@@ -193,13 +192,7 @@ class SolarDate {
       inY -= 621;
     }
     final gy = (m > 2) ? inY + 1 : inY;
-    var day = (365 * inY) +
-        ((gy + 3) ~/ 4) -
-        ((gy + 99) ~/ 100) +
-        ((gy + 399) ~/ 400) -
-        80 +
-        d +
-        sumMonthDay[m - 1];
+    var day = (365 * inY) + ((gy + 3) ~/ 4) - ((gy + 99) ~/ 100) + ((gy + 399) ~/ 400) - 80 + d + sumMonthDay[m - 1];
     jY += 33 * (day.round() / 12053).floor();
     day %= 12053;
     jY += 4 * (day.round() / 1461).floor();
@@ -338,8 +331,7 @@ class SolarDate {
   bool get isHoliday {
     if (weekday == 5) {
       return true;
-    } else if (solarHoliday
-            .contains('${_digits(month, 2)}${_digits(day, 2)}')) {
+    } else if (solarHoliday.contains('${_digits(month, 2)}${_digits(day, 2)}')) {
       return true;
     } else {
       return false;
@@ -380,8 +372,8 @@ class SolarDate {
     if (newFormat.contains(m)) {
       newFormat = newFormat.replaceFirst(m, month.toString());
     }
-    if (newFormat.contains(mmCaps)) {
-      newFormat = newFormat.replaceFirst(mmCaps, monthLong[month - 1]);
+    if (newFormat.contains(MM)) {
+      newFormat = newFormat.replaceFirst(MM, monthLong[month - 1]);
     }
     if (newFormat.contains(M)) {
       newFormat = newFormat.replaceFirst(M, monthShort[month - 1]);
@@ -395,14 +387,14 @@ class SolarDate {
     if (newFormat.contains(w)) {
       newFormat = newFormat.replaceFirst(w, ((day + 7) ~/ 7).toString());
     }
-    if (newFormat.contains(dD)) {
-      newFormat = newFormat.replaceFirst(dD, dayLong[weekday - 1]);
+    if (newFormat.contains(DD)) {
+      newFormat = newFormat.replaceFirst(DD, dayLong[weekday - 1]);
     }
     if (newFormat.contains(D)) {
       newFormat = newFormat.replaceFirst(D, dayShort[weekday - 1]);
     }
-    if (newFormat.contains(hhCaps)) {
-      newFormat = newFormat.replaceFirst(hhCaps, _digits(hour, 2));
+    if (newFormat.contains(HH)) {
+      newFormat = newFormat.replaceFirst(HH, _digits(hour, 2));
     }
     if (newFormat.contains(H)) {
       newFormat = newFormat.replaceFirst(H, hour.toString());
@@ -413,9 +405,8 @@ class SolarDate {
     if (newFormat.contains(h)) {
       newFormat = newFormat.replaceFirst(h, (hour % 12).toString());
     }
-    if (newFormat.contains(amCaps)) {
-      newFormat = newFormat.replaceFirst(
-          amCaps, hour < 12 ? 'قبل از ظهر' : 'بعد از ظهر');
+    if (newFormat.contains(AM)) {
+      newFormat = newFormat.replaceFirst(AM, hour < 12 ? 'قبل از ظهر' : 'بعد از ظهر');
     }
     if (newFormat.contains(am)) {
       newFormat = newFormat.replaceFirst(am, hour < 12 ? 'ق.ظ' : 'ب.ظ');
@@ -432,8 +423,8 @@ class SolarDate {
     if (newFormat.contains(s)) {
       newFormat = newFormat.replaceFirst(s, second.toString());
     }
-    if (newFormat.contains(sss)) {
-      newFormat = newFormat.replaceFirst(sss, _digits(millisecond, 3));
+    if (newFormat.contains(SSS)) {
+      newFormat = newFormat.replaceFirst(SSS, _digits(millisecond, 3));
     }
     if (newFormat.contains(S)) {
       newFormat = newFormat.replaceFirst(S, millisecond.toString());
@@ -468,8 +459,8 @@ class SolarDate {
     if (newFormat.contains(m)) {
       newFormat = newFormat.replaceFirst(m, jParse[1].toString());
     }
-    if (newFormat.contains(mmCaps)) {
-      newFormat = newFormat.replaceFirst(mmCaps, monthLong[jParse[1] - 1]);
+    if (newFormat.contains(MM)) {
+      newFormat = newFormat.replaceFirst(MM, monthLong[jParse[1] - 1]);
     }
     if (newFormat.contains(M)) {
       newFormat = newFormat.replaceFirst(M, monthShort[jParse[1] - 1]);
@@ -483,14 +474,14 @@ class SolarDate {
     if (newFormat.contains(w)) {
       newFormat = newFormat.replaceFirst(w, ((jParse[2] + 7) ~/ 7).toString());
     }
-    if (newFormat.contains(dD)) {
-      newFormat = newFormat.replaceFirst(dD, dayLong[parse.weekday - 1]);
+    if (newFormat.contains(DD)) {
+      newFormat = newFormat.replaceFirst(DD, dayLong[parse.weekday - 1]);
     }
     if (newFormat.contains(D)) {
       newFormat = newFormat.replaceFirst(D, dayShort[parse.weekday - 1]);
     }
-    if (newFormat.contains(hhCaps)) {
-      newFormat = newFormat.replaceFirst(hhCaps, _digits(parse.hour, 2));
+    if (newFormat.contains(HH)) {
+      newFormat = newFormat.replaceFirst(HH, _digits(parse.hour, 2));
     }
     if (newFormat.contains(H)) {
       newFormat = newFormat.replaceFirst(H, parse.hour.toString());
@@ -501,9 +492,8 @@ class SolarDate {
     if (newFormat.contains(h)) {
       newFormat = newFormat.replaceFirst(h, (parse.hour % 12).toString());
     }
-    if (newFormat.contains(amCaps)) {
-      newFormat = newFormat.replaceFirst(
-          amCaps, parse.hour < 12 ? 'قبل از ظهر' : 'بعد از ظهر');
+    if (newFormat.contains(AM)) {
+      newFormat = newFormat.replaceFirst(AM, parse.hour < 12 ? 'قبل از ظهر' : 'بعد از ظهر');
     }
     if (newFormat.contains(am)) {
       newFormat = newFormat.replaceFirst(am, parse.hour < 12 ? 'ق.ظ' : 'ب.ظ');
@@ -520,8 +510,8 @@ class SolarDate {
     if (newFormat.contains(s)) {
       newFormat = newFormat.replaceFirst(s, parse.second.toString());
     }
-    if (newFormat.contains(sss)) {
-      newFormat = newFormat.replaceFirst(sss, _digits(parse.millisecond, 3));
+    if (newFormat.contains(SSS)) {
+      newFormat = newFormat.replaceFirst(SSS, _digits(parse.millisecond, 3));
     }
     if (newFormat.contains(S)) {
       newFormat = newFormat.replaceFirst(S, parse.millisecond.toString());
