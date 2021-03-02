@@ -1,6 +1,10 @@
-# 0.0.1+1
+# 0.0.1+2
 
-* Fix format names.
+* Update README.md
+
+## 0.0.1+1
+
+* Fix format names
 
 ## 0.0.1
 

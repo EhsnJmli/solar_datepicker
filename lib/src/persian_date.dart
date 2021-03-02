@@ -20,7 +20,8 @@ const String DD = 'DD'; // نام روز
 
 const String D = 'D'; // نام روز
 
-const String hh = 'hh'; // ساعت با دو رقم اگر ساعت تک رقمی باشد 0 ابتدای عدد قرار میدهد فرمت 12 ساعته
+const String hh =
+    'hh'; // ساعت با دو رقم اگر ساعت تک رقمی باشد 0 ابتدای عدد قرار میدهد فرمت 12 ساعته
 
 const String h = 'h'; // ساعت با تک رقم فرمت 12 ساعته
 
@@ -192,7 +193,13 @@ class SolarDate {
       inY -= 621;
     }
     final gy = (m > 2) ? inY + 1 : inY;
-    var day = (365 * inY) + ((gy + 3) ~/ 4) - ((gy + 99) ~/ 100) + ((gy + 399) ~/ 400) - 80 + d + sumMonthDay[m - 1];
+    var day = (365 * inY) +
+        ((gy + 3) ~/ 4) -
+        ((gy + 99) ~/ 100) +
+        ((gy + 399) ~/ 400) -
+        80 +
+        d +
+        sumMonthDay[m - 1];
     jY += 33 * (day.round() / 12053).floor();
     day %= 12053;
     jY += 4 * (day.round() / 1461).floor();
@@ -331,7 +338,8 @@ class SolarDate {
   bool get isHoliday {
     if (weekday == 5) {
       return true;
-    } else if (solarHoliday.contains('${_digits(month, 2)}${_digits(day, 2)}')) {
+    } else if (solarHoliday
+        .contains('${_digits(month, 2)}${_digits(day, 2)}')) {
       return true;
     } else {
       return false;
@@ -406,7 +414,8 @@ class SolarDate {
       newFormat = newFormat.replaceFirst(h, (hour % 12).toString());
     }
     if (newFormat.contains(AM)) {
-      newFormat = newFormat.replaceFirst(AM, hour < 12 ? 'قبل از ظهر' : 'بعد از ظهر');
+      newFormat =
+          newFormat.replaceFirst(AM, hour < 12 ? 'قبل از ظهر' : 'بعد از ظهر');
     }
     if (newFormat.contains(am)) {
       newFormat = newFormat.replaceFirst(am, hour < 12 ? 'ق.ظ' : 'ب.ظ');
@@ -493,7 +502,8 @@ class SolarDate {
       newFormat = newFormat.replaceFirst(h, (parse.hour % 12).toString());
     }
     if (newFormat.contains(AM)) {
-      newFormat = newFormat.replaceFirst(AM, parse.hour < 12 ? 'قبل از ظهر' : 'بعد از ظهر');
+      newFormat = newFormat.replaceFirst(
+          AM, parse.hour < 12 ? 'قبل از ظهر' : 'بعد از ظهر');
     }
     if (newFormat.contains(am)) {
       newFormat = newFormat.replaceFirst(am, parse.hour < 12 ? 'ق.ظ' : 'ب.ظ');

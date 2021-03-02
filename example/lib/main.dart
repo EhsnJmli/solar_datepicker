@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 import 'package:solar_datepicker/solar_datepicker.dart';
 
@@ -11,6 +12,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Solar DatePicker Demo',
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+      ],
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -38,24 +43,17 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Container(
         alignment: Alignment.center,
-        child: RaisedButton(
+        child: ElevatedButton(
           child: Text(pickedDate),
           onPressed: () async {
             final picked = await showSolarDatePicker(
               context: context,
               initialDate: DateTime.now(),
+              locale: Locale('fa','IR'),
               firstDate: DateTime.now().subtract(Duration(days: 100 * 365)),
               lastDate: DateTime.now().add(Duration(days: 100 * 365)),
               isPersian: true,
-              builder: (context, child) => Column(
-                children: [
-                  Container(
-                    constraints: BoxConstraints(maxWidth: 400, maxHeight: 600),
-                    child: child,
-                  ),
-                ],
-              ),
-              initialDatePickerMode: SolarDatePickerMode.day,
+              initialDatePickerMode: SolarDatePickerMode.year,
             );
             if (picked != null) {
               setState(() {
