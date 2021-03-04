@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:shamsi_date/shamsi_date.dart';
 import 'package:solar_datepicker/solar_datepicker.dart';
 
 void main() {
