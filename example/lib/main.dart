@@ -32,7 +32,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String pickedDate = 'click to choose';
+  DateTime pickedDate;
+
+  String getDateStr() {
+    if (pickedDate == null) {
+      return null;
+    }
+    final f = Jalali.fromDateTime(pickedDate).formatter;
+    return '${f.yyyy}/${f.mm}/${f.dd}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         alignment: Alignment.center,
         child: ElevatedButton(
-          child: Text(pickedDate),
+          child: Text(getDateStr() ?? 'click to choose'),
           onPressed: () async {
             final picked = await showSolarDatePicker(
               context: context,
-              initialDate: DateTime.now(),
-              locale: Locale('fa','IR'),
+              initialDate: pickedDate ?? DateTime.now(),
+              locale: Locale('fa', 'IR'),
               firstDate: DateTime.now().subtract(Duration(days: 100 * 365)),
               lastDate: DateTime.now().add(Duration(days: 100 * 365)),
               isPersian: true,
@@ -56,13 +64,12 @@ class _MyHomePageState extends State<MyHomePage> {
             );
             if (picked != null) {
               setState(() {
-                final f = Jalali.fromDateTime(picked).formatter;
-                pickedDate = '${f.yyyy}/${f.mm}/${f.dd}';
+                pickedDate = picked;
               });
             }
           },
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

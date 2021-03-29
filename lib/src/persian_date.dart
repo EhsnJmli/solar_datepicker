@@ -59,11 +59,11 @@ class SolarDate {
     _getDate = _now();
   }
 
-  SolarDate.sDate({String defualtFormat, String gregorian}) {
+  SolarDate.sDate({String defaultFormat, String gregorian}) {
     DateTime now;
 
-    if (defualtFormat != null) {
-      _defaultVal = defualtFormat;
+    if (defaultFormat != null) {
+      _defaultVal = defaultFormat;
     }
 
     if (gregorian != null) {
@@ -453,8 +453,6 @@ class SolarDate {
     format ??= _defaultVal;
 
     var newFormat = format;
-
-    // print(parse.weekday);
 
     if (newFormat.contains(yyyy)) {
       newFormat = newFormat.replaceFirst(yyyy, _digits(jParse[0], 4));

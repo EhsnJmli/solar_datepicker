@@ -151,12 +151,12 @@ packages:
     source: hosted
     version: "4.1.0"
   shamsi_date:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: shamsi_date
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.1"
+    version: "0.12.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -168,7 +168,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.1+2"
+    version: "0.1.0"
   source_span:
     dependency: transitive
     description:
@@ -247,5 +247,5 @@ packages:
     source: hosted
     version: "3.0.0"
 sdks:
-  dart: ">=2.12.0-0.0 <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.17.0"

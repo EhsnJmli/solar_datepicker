@@ -510,11 +510,14 @@ class SolarDayPicker extends StatelessWidget {
         labels.add(Container());
       } else {
         final pDay = _digits(day, 2);
-        final jtgData = date.solarToGregorian(
-            getPearData.year, getPearData.month, int.parse(pDay));
+        final jtgData = Gregorian.fromJalali(
+            Jalali(getPearData.year, getPearData.month, int.parse(pDay)));
+        // final jtgData = date.solarToGregorian(
+        //     getPearData.year, getPearData.month, int.parse(pDay));
 
         final dayToBuild = isPersian
-            ? DateTime(jtgData[0], jtgData[1], jtgData[2])
+            // ? DateTime(jtgData[0], jtgData[1], jtgData[2])
+            ? DateTime(jtgData.year, jtgData.month, jtgData.day)
             : DateTime(year, month, day);
         final disabled = dayToBuild.isAfter(lastDate) ||
             dayToBuild.isBefore(firstDate) ||
@@ -770,8 +773,11 @@ class _SolarMonthPickerState extends State<SolarMonthPicker>
     });
   }
 
-  static int _monthDelta(DateTime startDate, DateTime endDate) =>
-      (endDate.year - startDate.year) * 12 + endDate.month - startDate.month;
+  static int _monthDelta(DateTime startDate, DateTime endDate) {
+    return (endDate.year - startDate.year) * 12 +
+        endDate.month -
+        startDate.month;
+  }
 
   /// Add months to a month truncated date.
   DateTime _addMonthsToMonthDate(DateTime monthDate, int monthsToAdd) =>
@@ -780,13 +786,15 @@ class _SolarMonthPickerState extends State<SolarMonthPicker>
 
   Widget _buildItems(BuildContext context, int index) {
     var month = _addMonthsToMonthDate(widget.firstDate, index);
-
     if (widget.isPersian) {
       final selectedPersianDate = SolarDate.sDate(
-          gregorian: widget.selectedDate.toString()); // To Edit Month Displaye
+          gregorian: widget.selectedDate.toString()); // To Edit Month Display
 
       if (selectedPersianDate.day >= 1 && selectedPersianDate.day < 12) {
         month = _addMonthsToMonthDate(widget.firstDate, index + 1);
+      }
+      if (selectedPersianDate.day == 11 && widget.selectedDate.day == 1) {
+        month = _addMonthsToMonthDate(widget.firstDate, index);
       }
     }
 
