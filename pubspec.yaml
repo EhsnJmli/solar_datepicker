@@ -1,17 +1,17 @@
 name: solar_datepicker
 description: Date Picker for persian date (solar / jalali / shamsi date).
-version: 0.1.0
+version: 1.0.0
 homepage: https://github.com/EhsnJmli/solar_datepicker
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  shamsi_date: ^0.12.0
+  shamsi_date: ^0.14.1
 
 dev_dependencies:
   flutter_test:

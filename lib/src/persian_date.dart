@@ -50,53 +50,57 @@ const String am = 'am'; // نمایش وقت به صورت کوتاه
 const String AM = 'AM'; // نمایش وقت به صورت کامل
 
 class SolarDate {
-  SolarDate([String format]) {
+  SolarDate([String? format]) {
     if (format != null) {
-      _defaultVal = format;
+      _defaultFormat = format;
     }
 
     _getNow = _now();
     _getDate = _now();
   }
 
-  SolarDate.sDate({String defaultFormat, String gregorian}) {
+  SolarDate.sDate({
+    String? defaultFormat,
+    String? gregorian,
+  }) {
     DateTime now;
 
     if (defaultFormat != null) {
-      _defaultVal = defaultFormat;
+      _defaultFormat = defaultFormat;
     }
 
     if (gregorian != null) {
       now = DateTime.parse(gregorian);
-      final list = gregorianToSolar(now.year, now.month, now.day);
+      final List<int> solarDate =
+          gregorianToSolar(now.year, now.month, now.day);
       setWeekday = now.weekday;
-      setYear = list[0];
-      setMonth = list[1];
-      setDay = list[2];
+      setYear = solarDate[0];
+      setMonth = solarDate[1];
+      setDay = solarDate[2];
       setHour = now.hour;
       setMinute = now.minute;
       setSecond = now.second;
       setMicrosecond = now.microsecond;
       setMillisecond = now.millisecond;
-      _getDate = _toFormat(_defaultVal);
+      _getDate = _toFormat(_defaultFormat);
     } else {
       _getDate = _now();
     }
   }
 
-  int _year;
-  int _month;
-  int _day;
-  int _weekday;
-  int _hour;
-  int _minute;
-  int _second;
-  int _millisecond;
-  int _microsecond;
+  int? _year;
+  int? _month;
+  int? _day;
+  int? _weekday;
+  int? _hour;
+  int? _minute;
+  int? _second;
+  int? _millisecond;
+  int? _microsecond;
   String _getDate = '';
   String _getNow = '';
 
-  String _defaultVal = 'yyyy-mm-dd hh:nn:ss SSS';
+  String _defaultFormat = 'yyyy-mm-dd hh:nn:ss SSS';
 
   String get getDate => _getDate;
 
@@ -104,18 +108,18 @@ class SolarDate {
 
   String _now() {
     final now = DateTime.now();
-    final list = gregorianToSolar(now.year, now.month, now.day);
+    final List<int> solarDate = gregorianToSolar(now.year, now.month, now.day);
     setWeekday = now.weekday;
-    setYear = list[0];
-    setMonth = list[1];
-    setDay = list[2];
+    setYear = solarDate[0];
+    setMonth = solarDate[1];
+    setDay = solarDate[2];
     setHour = now.hour;
     setMinute = now.minute;
     setSecond = now.second;
     setMicrosecond = now.microsecond;
     setMillisecond = now.millisecond;
 
-    return _toFormat(_defaultVal);
+    return _toFormat(_defaultFormat);
   }
 
   List<String> monthShort = const <String>[
@@ -181,7 +185,8 @@ class SolarDate {
     '1229',
   ];
 
-  dynamic gregorianToSolar(int y, int m, int d, [String separator]) {
+  // If separator is not null, returns List<int> and else returns string.
+  dynamic gregorianToSolar(int y, int m, int d, [String? separator]) {
     final sumMonthDay = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
     var jY = 0;
     var inY = y;
@@ -218,16 +223,17 @@ class SolarDate {
       jm = 7 + ((days - 186) ~/ 30);
       jd = 1 + (days - 186) % 30;
     }
-    dynamic persionDate;
+    var persianDate;
     if (separator == null) {
-      persionDate = [jY, jm, jd];
+      persianDate = [jY, jm, jd];
     } else {
-      persionDate = '$jY$separator$jm$separator$jd';
+      persianDate = '$jY$separator$jm$separator$jd';
     }
-    return persionDate;
+    return persianDate;
   }
 
-  dynamic solarToGregorian(int y, int m, int d, [String separator]) {
+  // If separator is not null, returns List<int> and else returns string.
+  dynamic solarToGregorian(int y, int m, int d, [String? separator]) {
     int gY;
     var inY = y;
     if (inY > 979) {
@@ -291,52 +297,73 @@ class SolarDate {
     return gregorianDate;
   }
 
-  Object parse(String formattedString, [String separator]) {
+  dynamic parse(String formattedString, [String? separator]) {
     final parse = DateTime.parse(formattedString);
     if (separator == null) {
-      final parseList = gregorianToSolar(parse.year, parse.month, parse.day);
-      parseList.add(parse.hour);
-      parseList.add(parse.minute);
-      parseList.add(parse.second);
-      return parseList;
+      final List<int> solarDate =
+          gregorianToSolar(parse.year, parse.month, parse.day);
+      solarDate.add(parse.hour);
+      solarDate.add(parse.minute);
+      solarDate.add(parse.second);
+      return solarDate;
     } else {
       return '${gregorianToSolar(parse.year, parse.month, parse.day, separator)} ${parse.hour}:${parse.minute}:${parse.second}';
     }
   }
 
-  String get weekdayName => dayLong[weekday - 1];
+  String get weekdayName => dayLong[weekday! - 1];
 
-  String get monthName => monthLong[month - 1];
+  String get monthName => monthLong[month! - 1];
 
-  int get year => _year;
-
-  // ignore: avoid_setters_without_getters
-  set setYear(int value) => _year = value;
-
-  int get month => _month;
+  int? get year => _year;
 
   // ignore: avoid_setters_without_getters
-  set setMonth(int value) => _month = value;
+  set setYear(int? value) => _year = value;
 
-  int get day => _day;
-
-  // ignore: avoid_setters_without_getters
-  set setDay(int value) => _day = value;
-
-  int get weekday => _weekday;
+  int? get month => _month;
 
   // ignore: avoid_setters_without_getters
-  set setWeekday(int value) => _weekday = value;
+  set setMonth(int? value) => _month = value;
 
-  int get hour => _hour;
+  int? get day => _day;
 
   // ignore: avoid_setters_without_getters
-  set setHour(int value) => _hour = value;
+  set setDay(int? value) => _day = value;
 
-  int get minute => _minute;
+  int? get weekday => _weekday;
+
+  // ignore: avoid_setters_without_getters
+  set setWeekday(int? value) => _weekday = value;
+
+  int? get hour => _hour;
+
+  // ignore: avoid_setters_without_getters
+  set setHour(int? value) => _hour = value;
+
+  int? get minute => _minute;
+
+  // ignore: avoid_setters_without_getters
+  set setMinute(int? value) => _minute = value;
+
+  int? get second => _second;
+
+  // ignore: avoid_setters_without_getters
+  set setSecond(int? value) => _second = value;
+
+  int? get microsecond => _microsecond;
+
+  // ignore: avoid_setters_without_getters
+  set setMicrosecond(int? value) {
+    _microsecond = value;
+  }
+
+  int? get millisecond => _millisecond;
+
+  // ignore: avoid_setters_without_getters
+  set setMillisecond(int? value) => _millisecond = value;
 
   bool get isHoliday {
-    if (weekday == 5) {
+    if (weekday != null && weekday == 5) {
       return true;
     } else if (solarHoliday
         .contains('${_digits(month, 2)}${_digits(day, 2)}')) {
@@ -346,33 +373,13 @@ class SolarDate {
     }
   }
 
-  // ignore: avoid_setters_without_getters
-  set setMinute(int value) => _minute = value;
-
-  int get second => _second;
-
-  // ignore: avoid_setters_without_getters
-  set setSecond(int value) => _second = value;
-
-  int get microsecond => _microsecond;
-
-  // ignore: avoid_setters_without_getters
-  set setMicrosecond(int value) {
-    _microsecond = value;
-  }
-
-  int get millisecond => _millisecond;
-
-  // ignore: avoid_setters_without_getters
-  set setMillisecond(int value) => _millisecond = value;
-
   String _toFormat(String format) {
     var newFormat = format;
     if (newFormat.contains(yyyy)) {
       newFormat = newFormat.replaceFirst(yyyy, _digits(year, 4));
     }
     if (newFormat.contains(yy)) {
-      newFormat = newFormat.replaceFirst(yy, _digits(year % 100, 2));
+      newFormat = newFormat.replaceFirst(yy, _digits(year! % 100, 2));
     }
     if (newFormat.contains(mm)) {
       newFormat = newFormat.replaceFirst(mm, _digits(month, 2));
@@ -381,10 +388,10 @@ class SolarDate {
       newFormat = newFormat.replaceFirst(m, month.toString());
     }
     if (newFormat.contains(MM)) {
-      newFormat = newFormat.replaceFirst(MM, monthLong[month - 1]);
+      newFormat = newFormat.replaceFirst(MM, monthLong[month! - 1]);
     }
     if (newFormat.contains(M)) {
-      newFormat = newFormat.replaceFirst(M, monthShort[month - 1]);
+      newFormat = newFormat.replaceFirst(M, monthShort[month! - 1]);
     }
     if (newFormat.contains(dd)) {
       newFormat = newFormat.replaceFirst(dd, _digits(day, 2));
@@ -393,13 +400,13 @@ class SolarDate {
       newFormat = newFormat.replaceFirst(d, day.toString());
     }
     if (newFormat.contains(w)) {
-      newFormat = newFormat.replaceFirst(w, ((day + 7) ~/ 7).toString());
+      newFormat = newFormat.replaceFirst(w, ((day! + 7) ~/ 7).toString());
     }
     if (newFormat.contains(DD)) {
-      newFormat = newFormat.replaceFirst(DD, dayLong[weekday - 1]);
+      newFormat = newFormat.replaceFirst(DD, dayLong[weekday! - 1]);
     }
     if (newFormat.contains(D)) {
-      newFormat = newFormat.replaceFirst(D, dayShort[weekday - 1]);
+      newFormat = newFormat.replaceFirst(D, dayShort[weekday! - 1]);
     }
     if (newFormat.contains(HH)) {
       newFormat = newFormat.replaceFirst(HH, _digits(hour, 2));
@@ -408,17 +415,17 @@ class SolarDate {
       newFormat = newFormat.replaceFirst(H, hour.toString());
     }
     if (newFormat.contains(hh)) {
-      newFormat = newFormat.replaceFirst(hh, _digits(hour % 12, 2));
+      newFormat = newFormat.replaceFirst(hh, _digits(hour! % 12, 2));
     }
     if (newFormat.contains(h)) {
-      newFormat = newFormat.replaceFirst(h, (hour % 12).toString());
+      newFormat = newFormat.replaceFirst(h, (hour! % 12).toString());
     }
     if (newFormat.contains(AM)) {
       newFormat =
-          newFormat.replaceFirst(AM, hour < 12 ? 'قبل از ظهر' : 'بعد از ظهر');
+          newFormat.replaceFirst(AM, hour! < 12 ? 'قبل از ظهر' : 'بعد از ظهر');
     }
     if (newFormat.contains(am)) {
-      newFormat = newFormat.replaceFirst(am, hour < 12 ? 'ق.ظ' : 'ب.ظ');
+      newFormat = newFormat.replaceFirst(am, hour! < 12 ? 'ق.ظ' : 'ب.ظ');
     }
     if (newFormat.contains(nn)) {
       newFormat = newFormat.replaceFirst(nn, _digits(minute, 2));
@@ -447,39 +454,40 @@ class SolarDate {
     return newFormat;
   }
 
-  String parseToFormat(String parseDate, [String format]) {
+  String parseToFormat(String parseDate, [String? format]) {
     final parse = DateTime.parse(parseDate);
-    final jParse = gregorianToSolar(parse.year, parse.month, parse.day);
-    format ??= _defaultVal;
+    final List<int> solarDate =
+        gregorianToSolar(parse.year, parse.month, parse.day);
 
-    var newFormat = format;
+    var newFormat = format ?? _defaultFormat;
 
     if (newFormat.contains(yyyy)) {
-      newFormat = newFormat.replaceFirst(yyyy, _digits(jParse[0], 4));
+      newFormat = newFormat.replaceFirst(yyyy, _digits(solarDate[0], 4));
     }
     if (newFormat.contains(yy)) {
-      newFormat = newFormat.replaceFirst(yy, _digits(jParse[0] % 100, 2));
+      newFormat = newFormat.replaceFirst(yy, _digits(solarDate[0] % 100, 2));
     }
     if (newFormat.contains(mm)) {
-      newFormat = newFormat.replaceFirst(mm, _digits(jParse[1], 2));
+      newFormat = newFormat.replaceFirst(mm, _digits(solarDate[1], 2));
     }
     if (newFormat.contains(m)) {
-      newFormat = newFormat.replaceFirst(m, jParse[1].toString());
+      newFormat = newFormat.replaceFirst(m, solarDate[1].toString());
     }
     if (newFormat.contains(MM)) {
-      newFormat = newFormat.replaceFirst(MM, monthLong[jParse[1] - 1]);
+      newFormat = newFormat.replaceFirst(MM, monthLong[solarDate[1] - 1]);
     }
     if (newFormat.contains(M)) {
-      newFormat = newFormat.replaceFirst(M, monthShort[jParse[1] - 1]);
+      newFormat = newFormat.replaceFirst(M, monthShort[solarDate[1] - 1]);
     }
     if (newFormat.contains(dd)) {
-      newFormat = newFormat.replaceFirst(dd, jParse[2].toString());
+      newFormat = newFormat.replaceFirst(dd, solarDate[2].toString());
     }
     if (newFormat.contains(d)) {
-      newFormat = newFormat.replaceFirst(d, _digits(jParse[2], 2));
+      newFormat = newFormat.replaceFirst(d, _digits(solarDate[2], 2));
     }
     if (newFormat.contains(w)) {
-      newFormat = newFormat.replaceFirst(w, ((jParse[2] + 7) ~/ 7).toString());
+      newFormat =
+          newFormat.replaceFirst(w, ((solarDate[2] + 7) ~/ 7).toString());
     }
     if (newFormat.contains(DD)) {
       newFormat = newFormat.replaceFirst(DD, dayLong[parse.weekday - 1]);
@@ -533,7 +541,7 @@ class SolarDate {
     return newFormat;
   }
 
-  String _digits(int value, int length) {
+  String _digits(int? value, int length) {
     var ret = '$value';
     if (ret.length < length) {
       ret = '0' * (length - ret.length) + ret;
