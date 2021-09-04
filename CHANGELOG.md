@@ -1,23 +1,27 @@
-# 1.0.0
+# 1.0.1
 
-* Migrate to null-safety
+- Upgrade dependencies
+
+## 1.0.0
+
+- Migrate to null-safety
 
 ## 0.1.0
 
-* Bugs Fixed
+- Bugs Fixed
 
 ## 0.0.1+3
 
-* Exported shamsi_date package
+- Exported shamsi_date package
 
 ## 0.0.1+2
 
-* Update README.md
+- Update README.md
 
 ## 0.0.1+1
 
-* Fix format names
+- Fix format names
 
 ## 0.0.1
 
-* Initial Release
+- Initial Release
