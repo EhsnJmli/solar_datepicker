@@ -1,4 +1,8 @@
-# 1.0.1
+# 1.0.2
+
+- Bugs Fixed
+
+## 1.0.1
 
 - Upgrade dependencies
 

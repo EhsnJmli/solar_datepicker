@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
               initialDate: pickedDate ?? DateTime.now(),
               locale: Locale('fa', 'IR'),
               firstDate: DateTime.now().subtract(Duration(days: 100 * 365)),
-              lastDate: DateTime.now().add(Duration(days: 100 * 365)),
+              lastDate: DateTime.now(),
               isPersian: true,
               initialDatePickerMode: SolarDatePickerMode.year,
             );

@@ -743,7 +743,8 @@ class _SolarMonthPickerState extends State<SolarMonthPicker>
       }
       if ((selectedPersianDate.day == 11 && widget.selectedDate.day == 1) ||
           (selectedPersianDate.day == 10 && widget.selectedDate.day == 1) ||
-          (selectedPersianDate.day == 11 && widget.selectedDate.day == 2)) {
+          (selectedPersianDate.day == 11 && widget.selectedDate.day == 2) ||
+          (selectedPersianDate.day == 11 && widget.selectedDate.day == 3)) {
         month = _addMonthsToMonthDate(widget.firstDate, index);
       }
       if (isLeapYear &&
@@ -789,8 +790,32 @@ class _SolarMonthPickerState extends State<SolarMonthPicker>
       .isAfter(DateTime(widget.firstDate.year, widget.firstDate.month));
 
   /// True if the latest allowable month is displayed.
-  bool get _isDisplayingLastMonth => !_currentDisplayedMonthDate
-      .isBefore(DateTime(widget.lastDate.year, widget.lastDate.month));
+  bool get _isDisplayingLastMonth {
+    var month = widget.lastDate.month;
+
+    if (widget.isPersian) {
+      final selectedPersianDate = SolarDate.sDate(
+          gregorian: widget.lastDate.toString()); // To Edit Month Display
+
+      final isLeapYear = ((selectedPersianDate.year ?? 0) + 1) % 4 == 0;
+      if (selectedPersianDate.day! >= 1 && selectedPersianDate.day! < 12) {
+        month = widget.lastDate.month + 1;
+      }
+      if ((selectedPersianDate.day == 11 && widget.selectedDate.day == 1) ||
+          (selectedPersianDate.day == 10 && widget.selectedDate.day == 1) ||
+          (selectedPersianDate.day == 11 && widget.selectedDate.day == 2) ||
+          (selectedPersianDate.day == 11 && widget.selectedDate.day == 3)) {
+        month = widget.lastDate.month;
+      }
+      if (isLeapYear &&
+          (selectedPersianDate.day == 12 && widget.selectedDate.day == 31)) {
+        month = widget.lastDate.month + 1;
+      }
+    }
+
+    return !_currentDisplayedMonthDate
+        .isBefore(DateTime(widget.lastDate.year, month));
+  }
 
   late DateTime _previousMonthDate;
   late DateTime _nextMonthDate;
@@ -830,7 +855,7 @@ class _SolarMonthPickerState extends State<SolarMonthPicker>
                     controller: _dayPickerController,
                     scrollDirection: Axis.horizontal,
                     itemCount:
-                        _monthDelta(widget.firstDate, widget.lastDate) + 1,
+                        _monthDelta(widget.firstDate, widget.lastDate) + 2,
                     itemBuilder: _buildItems,
                     onPageChanged: _handleMonthPageChanged,
                   ),
