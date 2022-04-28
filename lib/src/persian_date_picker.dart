@@ -68,7 +68,7 @@ class _SolarDatePickerHeader extends StatelessWidget {
 
     Color dayColor;
     Color yearColor;
-    switch (themeData.primaryColorBrightness) {
+    switch (themeData.colorScheme.brightness) {
       case Brightness.light:
         dayColor =
             mode == SolarDatePickerMode.day ? Colors.black87 : Colors.black54;
@@ -495,9 +495,11 @@ class SolarDayPicker extends StatelessWidget {
                 selectedPersianDate.day == day);
         if (isSelectedDay) {
           // The selected day gets a circle background highlight, and a contrasting text color.
-          itemStyle = themeData.accentTextTheme.bodyText1;
+          itemStyle = themeData.textTheme.bodyText1?.copyWith(
+            color: themeData.colorScheme.onSecondary,
+          );
           decoration = BoxDecoration(
-            color: themeData.accentColor,
+            color: themeData.colorScheme.secondary,
             shape: BoxShape.circle,
           );
         } else if (disabled) {
@@ -514,7 +516,7 @@ class SolarDayPicker extends StatelessWidget {
                   currentPDate.day == day)) {
             // The current day gets a different text color.
             itemStyle = themeData.textTheme.bodyText1
-                ?.copyWith(color: themeData.accentColor);
+                ?.copyWith(color: themeData.colorScheme.secondary);
           }
         }
 
@@ -1007,7 +1009,7 @@ class _SolarYearPickerState extends State<SolarYearPicker> {
         final pYear = SolarDate.sDate(gregorian: dateee.toString());
         final itemStyle = isSelected
             ? themeData.textTheme.headline5!
-                .copyWith(color: themeData.accentColor)
+                .copyWith(color: themeData.colorScheme.secondary)
             : style;
         return InkWell(
           key: ValueKey<int>(year),

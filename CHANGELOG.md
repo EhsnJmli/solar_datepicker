@@ -1,4 +1,9 @@
-# 1.0.2
+# 1.0.3
+
+- Fixed issues from flutter static analysis
+- Upgrade dependencies
+
+## 1.0.2
 
 - Bugs Fixed
 
