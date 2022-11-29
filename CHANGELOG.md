@@ -1,4 +1,8 @@
-# 1.0.3
+# 1.0.4
+
+- Added `headerContentColor` argument
+
+## 1.0.3
 
 - Fixed issues from flutter static analysis
 - Upgrade dependencies

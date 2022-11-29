@@ -45,6 +45,7 @@ class _SolarDatePickerHeader extends StatelessWidget {
     required this.onModeChanged,
     required this.orientation,
     this.isPersian = true,
+    this.headerContentColor,
   }) : super(key: key);
 
   final DateTime selectedDate;
@@ -52,6 +53,7 @@ class _SolarDatePickerHeader extends StatelessWidget {
   final ValueChanged<SolarDatePickerMode> onModeChanged;
   final Orientation orientation;
   final bool isPersian;
+  final Color? headerContentColor;
 
   void _handleChangeMode(SolarDatePickerMode value) {
     if (value != mode) {
@@ -70,16 +72,18 @@ class _SolarDatePickerHeader extends StatelessWidget {
     Color yearColor;
     switch (themeData.colorScheme.brightness) {
       case Brightness.light:
-        dayColor =
-            mode == SolarDatePickerMode.day ? Colors.black87 : Colors.black54;
-        yearColor =
-            mode == SolarDatePickerMode.year ? Colors.black87 : Colors.black54;
+        dayColor = headerContentColor ??
+            (mode == SolarDatePickerMode.day ? Colors.black87 : Colors.black54);
+        yearColor = headerContentColor ??
+            (mode == SolarDatePickerMode.year
+                ? Colors.black87
+                : Colors.black54);
         break;
       case Brightness.dark:
-        dayColor =
-            mode == SolarDatePickerMode.day ? Colors.white : Colors.white70;
-        yearColor =
-            mode == SolarDatePickerMode.year ? Colors.white : Colors.white70;
+        dayColor = headerContentColor ??
+            (mode == SolarDatePickerMode.day ? Colors.white : Colors.white70);
+        yearColor = headerContentColor ??
+            (mode == SolarDatePickerMode.year ? Colors.white : Colors.white70);
         break;
     }
     final dayStyle = headerTextTheme.headline4?.copyWith(color: dayColor);
@@ -1040,6 +1044,7 @@ class _DatePickerDialog extends StatefulWidget {
     this.firstDate,
     this.lastDate,
     this.selectableDayPredicate,
+    this.headerContentColor,
   }) : super(key: key);
 
   final DateTime? initialDate;
@@ -1048,6 +1053,7 @@ class _DatePickerDialog extends StatefulWidget {
   final bool isPersian;
   final SelectableDayPredicate? selectableDayPredicate;
   final SolarDatePickerMode initialDatePickerMode;
+  final Color? headerContentColor;
 
   @override
   _DatePickerDialogState createState() => _DatePickerDialogState();
@@ -1195,6 +1201,7 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
           mode: _mode,
           onModeChanged: _handleModeChanged,
           orientation: orientation,
+          headerContentColor: widget.headerContentColor,
         );
         switch (orientation) {
           case Orientation.portrait:
@@ -1271,6 +1278,9 @@ typedef SelectableDayPredicate = bool Function(DateTime day);
 /// provided by [Directionality]. If both [locale] and [textDirection] are not
 /// null, [textDirection] overrides the direction chosen for the [locale].
 ///
+/// An optional [headerContentColor] argument can be used to set the color of
+/// date picker header content.
+///
 /// The [context], [useRootNavigator] and [routeSettings] arguments are passed to
 /// [showDialog], the documentation for which discusses how it is used.
 ///
@@ -1324,6 +1334,7 @@ Future<DateTime?> showSolarDatePicker({
   TransitionBuilder? builder,
   bool useRootNavigator = true,
   RouteSettings? routeSettings,
+  Color? headerContentColor,
 }) async {
   assert(!initialDate.isBefore(firstDate),
       'initialDate must be on or after firstDate');
@@ -1342,6 +1353,7 @@ Future<DateTime?> showSolarDatePicker({
     isPersian: isPersian,
     selectableDayPredicate: selectableDayPredicate,
     initialDatePickerMode: initialDatePickerMode,
+    headerContentColor: headerContentColor,
   );
 
   if (textDirection != null) {

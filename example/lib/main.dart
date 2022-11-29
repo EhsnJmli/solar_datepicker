@@ -64,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
               firstDate: DateTime.now().subtract(Duration(days: 100 * 365)),
               lastDate: DateTime.now(),
               isPersian: true,
+              headerContentColor: Colors.white,
               initialDatePickerMode: SolarDatePickerMode.year,
             );
             if (picked != null) {
