@@ -86,8 +86,8 @@ class _SolarDatePickerHeader extends StatelessWidget {
             (mode == SolarDatePickerMode.year ? Colors.white : Colors.white70);
         break;
     }
-    final dayStyle = headerTextTheme.headline4?.copyWith(color: dayColor);
-    final yearStyle = headerTextTheme.subtitle1?.copyWith(color: yearColor);
+    final dayStyle = headerTextTheme.headlineMedium?.copyWith(color: dayColor);
+    final yearStyle = headerTextTheme.titleMedium?.copyWith(color: yearColor);
 
     Color backgroundColor;
     switch (themeData.brightness) {
@@ -95,7 +95,7 @@ class _SolarDatePickerHeader extends StatelessWidget {
         backgroundColor = themeData.primaryColor;
         break;
       case Brightness.dark:
-        backgroundColor = themeData.backgroundColor;
+        backgroundColor = themeData.colorScheme.background;
         break;
     }
 
@@ -462,7 +462,7 @@ class SolarDayPicker extends StatelessWidget {
         ? dayShort.indexOf(pDate.weekdayName)
         : _computeFirstDayOffset(year, month, mDay, localizations);
     final labels = <Widget>[
-      ..._getDayHeaders(themeData.textTheme.caption, localizations),
+      ..._getDayHeaders(themeData.textTheme.bodySmall, localizations),
     ];
     // ignore: literal_only_boolean_expressions
     for (var i = 0; true; i += 1) {
@@ -488,7 +488,7 @@ class SolarDayPicker extends StatelessWidget {
                 !selectableDayPredicate!(dayToBuild));
 
         BoxDecoration? decoration;
-        var itemStyle = themeData.textTheme.bodyText2;
+        var itemStyle = themeData.textTheme.bodyMedium;
 
         final isSelectedDay = !isPersian
             ? (selectedDate.year == year &&
@@ -499,7 +499,7 @@ class SolarDayPicker extends StatelessWidget {
                 selectedPersianDate.day == day);
         if (isSelectedDay) {
           // The selected day gets a circle background highlight, and a contrasting text color.
-          itemStyle = themeData.textTheme.bodyText1?.copyWith(
+          itemStyle = themeData.textTheme.bodyLarge?.copyWith(
             color: themeData.colorScheme.onSecondary,
           );
           decoration = BoxDecoration(
@@ -507,7 +507,7 @@ class SolarDayPicker extends StatelessWidget {
             shape: BoxShape.circle,
           );
         } else if (disabled) {
-          itemStyle = themeData.textTheme.bodyText2!
+          itemStyle = themeData.textTheme.bodyMedium!
               .copyWith(color: themeData.disabledColor);
         } else {
           if ((isPersian &&
@@ -519,7 +519,7 @@ class SolarDayPicker extends StatelessWidget {
                   currentPDate.month == getPearData.month &&
                   currentPDate.day == day)) {
             // The current day gets a different text color.
-            itemStyle = themeData.textTheme.bodyText1
+            itemStyle = themeData.textTheme.bodyLarge
                 ?.copyWith(color: themeData.colorScheme.secondary);
           }
         }
@@ -572,7 +572,7 @@ class SolarDayPicker extends StatelessWidget {
                   isPersian
                       ? '${pDate.monthName}  ${pDate.year}'
                       : localizations.formatMonthYear(displayedMonth),
-                  style: themeData.textTheme.subtitle1,
+                  style: themeData.textTheme.titleMedium,
                 ),
               ),
             ),
@@ -999,7 +999,7 @@ class _SolarYearPickerState extends State<SolarYearPicker> {
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterial(context));
     final themeData = Theme.of(context);
-    final style = themeData.textTheme.bodyText2;
+    final style = themeData.textTheme.bodyMedium;
     return ListView.builder(
       dragStartBehavior: widget.dragStartBehavior,
       controller: scrollController,
@@ -1012,7 +1012,7 @@ class _SolarYearPickerState extends State<SolarYearPicker> {
             DateTime(year, widget.selectedDate.month, widget.selectedDate.day);
         final pYear = SolarDate.sDate(gregorian: dateee.toString());
         final itemStyle = isSelected
-            ? themeData.textTheme.headline5!
+            ? themeData.textTheme.headlineSmall!
                 .copyWith(color: themeData.colorScheme.secondary)
             : style;
         return InkWell(
